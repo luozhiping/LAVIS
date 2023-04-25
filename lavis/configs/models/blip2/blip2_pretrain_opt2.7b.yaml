@@ -5,11 +5,12 @@
 
 model:
   arch: pretrain_opt2.7b
-  load_finetuned: False
+  load_finetuned: True
 
   pretrained: "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_opt2.7b.pth"
-  finetuned: ""
-
+  #finetuned: "/root/LAVIS/lavis/output/BLIP2/Pretrain_stage2/20230406160/checkpoint_0.pth"
+  #finetuned: ""
+  finetuned: "/root/LAVIS/lavis/output/BLIP2/Pretrain_stage2/20230412170/checkpoint_9.pth"
   # vit encoder
   image_size: 224
   drop_path_rate: 0

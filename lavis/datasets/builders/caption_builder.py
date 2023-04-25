@@ -10,6 +10,7 @@ from lavis.datasets.datasets.coco_caption_datasets import (
     COCOCapDataset,
     COCOCapEvalDataset,
     NoCapsEvalDataset,
+    BlockCapDataset,
 )
 
 from lavis.common.registry import registry
@@ -17,6 +18,16 @@ from lavis.datasets.datasets.video_caption_datasets import (
     VideoCaptionDataset,
     VideoCaptionEvalDataset,
 )
+
+@registry.register_builder("block_caption")
+class BlockCapBuilder(BaseDatasetBuilder):
+    train_dataset_cls = BlockCapDataset
+    eval_dataset_cls = BlockCapDataset
+
+    DATASET_CONFIG_DICT = {
+        "default": "configs/datasets/coco/defaults_block.yaml",
+    }
+
 
 
 @registry.register_builder("coco_caption")
@@ -66,3 +77,4 @@ class VATEXCapBuilder(BaseDatasetBuilder):
     DATASET_CONFIG_DICT = {
         "default": "configs/datasets/vatex/defaults_cap.yaml",
     }
+

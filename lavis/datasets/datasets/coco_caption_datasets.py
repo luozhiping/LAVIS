@@ -16,7 +16,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 from lavis.datasets.datasets.caption_datasets import CaptionDataset, CaptionEvalDataset
 
 COCOCapDataset = CaptionDataset
-
+BlockCapDataset = CaptionDataset
 
 class COCOCapEvalDataset(CaptionEvalDataset):
     def __init__(self, vis_processor, text_processor, vis_root, ann_paths):
@@ -68,3 +68,4 @@ class NoCapsEvalDataset(CaptionEvalDataset):
             "image_id": img_id,
             "instance_id": ann["instance_id"],
         }
+
