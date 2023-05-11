@@ -6,7 +6,7 @@ import torch
 from PIL import Image
 import requests
 from lavis.models import load_model_and_preprocess
-filename = "./IMG_8968.MOV"
+filename = "./WYWM0746.MP4"
 
 cap = cv2.VideoCapture(filename)
 i = 0
@@ -15,7 +15,7 @@ while True:
     if not ret:
         break
     #cv2.imshow('capture', frame)
-    cv2.imwrite("./output/%s_%s.jpg" % (filename, i), frame)
+    cv2.imwrite("./images/%s_%s.jpg" % (filename, i), frame)
     # img = cv2.imread("./output/%s_%s.jpg" % (filename, i))
     # cv2.putText(img, "test test", (100, 300), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 1, cv2.LINE_AA)
     # cv2.imshow("aa", img)
@@ -34,7 +34,7 @@ correct = 0
 error = 0
 results = {}
 
-for root, dirs, files in os.walk("./output/", topdown=False):
+for root, dirs, files in os.walk("./images/", topdown=False):
     for name in files:
         filename = os.path.join(root, name)
     #print(data['image_id'])

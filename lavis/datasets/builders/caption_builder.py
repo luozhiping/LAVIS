@@ -28,7 +28,14 @@ class BlockCapBuilder(BaseDatasetBuilder):
         "default": "configs/datasets/coco/defaults_block.yaml",
     }
 
+@registry.register_builder("dajiang_milk")
+class BlockCapBuilder(BaseDatasetBuilder):
+    train_dataset_cls = BlockCapDataset
+    eval_dataset_cls = BlockCapDataset
 
+    DATASET_CONFIG_DICT = {
+        "default": "configs/datasets/coco/defaults_dajiang_milk.yaml",
+    }
 
 @registry.register_builder("coco_caption")
 class COCOCapBuilder(BaseDatasetBuilder):

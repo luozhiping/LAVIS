@@ -32,14 +32,14 @@ class CaptionDataset(BaseDataset, __DisplMixin):
         ann_root (string): directory to store the annotation file
         """
         super().__init__(vis_processor, text_processor, vis_root, ann_paths)
-
+        print(self.annotation[0])
         self.img_ids = {}
         n = 0
-        for ann in self.annotation:
-            img_id = ann["image_id"]
-            if img_id not in self.img_ids.keys():
-                self.img_ids[img_id] = n
-                n += 1
+#        for ann in self.annotation:
+ #           img_id = ann["image_id"]
+  #          if img_id not in self.img_ids.keys():
+   #             self.img_ids[img_id] = n
+    #            n += 1
 
     def __getitem__(self, index):
 
@@ -55,7 +55,7 @@ class CaptionDataset(BaseDataset, __DisplMixin):
         return {
             "image": image,
             "text_input": caption,
-            "image_id": self.img_ids[ann["image_id"]],
+            "image_id": ann["image_id"],
         }
 
 
