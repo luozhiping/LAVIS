@@ -11,21 +11,47 @@ from PIL import Image
 import requests
 from lavis.models import load_model_and_preprocess
 import io
+import argparse
+import base64
+def parse_args():
+    parser = argparse.ArgumentParser(description="Training")
+
+    parser.add_argument("--gpu", required=True, help="path to configuration file.")
+    args = parser.parse_args()
+    # if 'LOCAL_RANK' not in os.environ:
+    #     os.environ['LOCAL_RANK'] = str(args.local_rank)
+
+    return args
+
+arg = parse_args()
 
 app = Flask(__name__)
-device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
+#device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
+device = 'cuda:%s' % arg.gpu
 #model, vis_processors, _ = load_model_and_preprocess(
 #    name="blip2_opt", model_type="pretrain_opt2.7b", is_eval=True, device=device
 #)
-model, vis_processors, _ = load_model_and_preprocess(name="blip2_vicuna_instruct", model_type="vicuna7b", is_eval=True, device="cuda:1")
+model, vis_processors, _ = load_model_and_preprocess(name="blip2_vicuna_instruct", model_type="vicuna7b", is_eval=True, device=device)
 import time
 
 @app.route('/generate', methods=['POST'])
 def get_img():
     begin = time.time()
-    f = request.files['file']
-    img = f.read()
-    byte_stream = io.BytesIO(img)
+    #f = request.files['file']
+    #img = f.read()
+
+    #print('read file:', str(time.time() - begin))
+    begin = time.time()
+    b = request.get_json()['file']
+    print('get json:', str(time.time() - begin))
+    begin = time.time()
+    b = base64.b64decode(b)
+    print('base64:', str(time.time() - begin))
+    #byte_stream = io.BytesIO(img)
+    begin = time.time() 
+    byte_stream = io.BytesIO(b)
+    print('from byte:', str(time.time() - begin))
+    begin = time.time()
     raw_image = Image.open(byte_stream).convert("RGB")
     print('open img:', str(time.time() -begin))
     begin = time.time()
@@ -39,6 +65,7 @@ def get_img():
 from random import sample
 
 if __name__ == '__main__':
-    app.run(debug=False, host="0.0.0.0")
+    app.run(debug=False, host="0.0.0.0", port=5000+int(arg.gpu))
     # raw_image = Image.open("output/IMG_8968.MOV_0.jpg").convert('RGB')
     # print(raw_image)
+
