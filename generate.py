@@ -42,7 +42,7 @@ def get_img():
 
     #print('read file:', str(time.time() - begin))
     begin = time.time()
-    b = request.get_json()['file']
+    b = request.get_data()
     print('get json:', str(time.time() - begin))
     begin = time.time()
     b = base64.b64decode(b)
@@ -56,6 +56,8 @@ def get_img():
     print('open img:', str(time.time() -begin))
     begin = time.time()
     image = vis_processors["eval"](raw_image).unsqueeze(0).to(device)
+    print('vis:', str(time.time() -begin))
+    begin = time.time()
     result = model.generate({"image": image, "prompt": "Find the red block and throw it in the trash"})[0]
     print('gen:', str(time.time() -begin))
     return result
