@@ -1,8 +1,8 @@
 ## InstructBLIP: Towards General-purpose Vision-Language Models with Instruction Tuning
-This is the official implementation of InstructBLIP [paper](https://arxiv.org/abs/2301.12597). 
+This is the official implementation of InstructBLIP [paper](http://arxiv.org/abs/2305.06500). 
 InstructBLIP proposes a new vision-language instruction-tuning framework using BLIP-2 models, achieving state-of-the-art zero-shot generalization performance on a wide range of vision-language tasks.
 
-<img src="showcase.png" width="600">
+<img src="showcase.png" width="1000">
 
 ### Install from source:
 ```
@@ -23,7 +23,7 @@ We will soon support installing InstructBLIP with PyPI
 ```
 
 ### Prepare Vicuna Weights
-InstructBLIP uses frozen Vicuna 7B and 13B models. Please first follow the [instructions](https://github.com/lm-sys/FastChat) to prepare Vicuna weights. 
+InstructBLIP uses frozen Vicuna 7B and 13B models. Please first follow the [instructions](https://github.com/lm-sys/FastChat) to prepare Vicuna v1.1 weights. 
 Then modify the ```llm_model``` in the [Model Config](https://github.com/salesforce/LAVIS/blob/main/lavis/configs/models/blip2/blip2_instruct_vicuna7b.yaml) to the folder that contains Vicuna weights.
 
 
@@ -95,6 +95,15 @@ are obtained from their respective papers, while the official demo is used for M
 <img src="comparison.png" width="600">
 
 ### BibTeX
-
+```
+@misc{instructblip,
+      title={InstructBLIP: Towards General-purpose Vision-Language Models with Instruction Tuning}, 
+      author={Wenliang Dai and Junnan Li and Dongxu Li and Anthony Meng Huat Tiong and Junqi Zhao and Weisheng Wang and Boyang Li and Pascale Fung and Steven Hoi},
+      year={2023},
+      eprint={2305.06500},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
 ### Usage and License: 
 The model is intended and licensed for research use only. InstructBLIP w/ Vicuna models are restricted to uses that follow the license agreement of LLaMA and Vicuna. The models have been trained on the [LLaVA](https://llava-vl.github.io/) dataset which is CC BY NC 4.0 (allowing only non-commercial use).
