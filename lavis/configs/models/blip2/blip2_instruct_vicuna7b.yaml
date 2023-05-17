@@ -11,8 +11,8 @@ model:
   load_pretrained: True
 
   pretrained: "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/InstructBLIP/instruct_blip_vicuna7b_trimmed.pth"
-  finetuned: "/root/luozhiping/LAVIS/lavis/output/BLIP2/Pretrain_stage2/20230512095/checkpoint_1.pth"
-
+  finetuned: "/root/luozhiping/LAVIS/lavis/output/BLIP2/Pretrain_stage2/20230517094/checkpoint_3.pth"
+  #finetuned: "/root/luozhiping/LAVIS/lavis/output/BLIP2/Pretrain_stage2/20230516141/checkpoint_3.pth"
   # vit encoder
   image_size: 224
   drop_path_rate: 0

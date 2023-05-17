@@ -13,7 +13,7 @@ import transformers
 
 from lavis.common.registry import registry
 from lavis.models.blip2_models.blip2 import Blip2Base, disabled_train
-
+import time
 @registry.register_model("blip2_vicuna_instruct")
 class Blip2VicunaInstruct(Blip2Base):
     """
@@ -242,14 +242,14 @@ class Blip2VicunaInstruct(Blip2Base):
         self,
         samples,
         use_nucleus_sampling=False,
-        num_beams=5,
-        max_length=256,
+        num_beams=1,
+        max_length=1,
         min_length=1,
         top_p=0.9,
         repetition_penalty=1.5,
         length_penalty=1,
         num_captions=1,
-        temperature=1,
+        temperature=0,
     ):
         self.llm_tokenizer.padding_side = "left"
 
@@ -286,7 +286,6 @@ class Blip2VicunaInstruct(Blip2Base):
             ).to(image.device)
             query_atts = torch.ones(query_tokens.size()[:-1], dtype=torch.long).to(image.device)
             Qformer_atts = torch.cat([query_atts, text_Qformer.attention_mask], dim=1)
-
         # For video data
         if image.dim() == 5:
             inputs_llm, atts_llm = [], []
@@ -348,12 +347,11 @@ class Blip2VicunaInstruct(Blip2Base):
             padding="longest",
             return_tensors="pt"
         ).to(image.device)
-
+        
         with self.maybe_autocast():
             inputs_embeds = self.llm_model.get_input_embeddings()(llm_tokens.input_ids)
             inputs_embeds = torch.cat([inputs_llm, inputs_embeds], dim=1)
             attention_mask = torch.cat([atts_llm, llm_tokens.attention_mask], dim=1)
-
             outputs = self.llm_model.generate(
                 inputs_embeds=inputs_embeds,
                 attention_mask=attention_mask,
@@ -368,11 +366,8 @@ class Blip2VicunaInstruct(Blip2Base):
                 length_penalty=length_penalty,
                 num_return_sequences=num_captions,
             )
-
         outputs[outputs == 0] = 2 # convert output id 0 to 2 (eos_token_id)
         output_text = self.llm_tokenizer.batch_decode(outputs, skip_special_tokens=True)
-        output_text = [text.strip() for text in output_text]
-
         return output_text
 
     def predict_answers(

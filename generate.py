@@ -32,6 +32,7 @@ device = 'cuda:%s' % arg.gpu
 #    name="blip2_opt", model_type="pretrain_opt2.7b", is_eval=True, device=device
 #)
 model, vis_processors, _ = load_model_and_preprocess(name="blip2_vicuna_instruct", model_type="vicuna7b", is_eval=True, device=device)
+#model, vis_processors, _ = load_model_and_preprocess(name="blip2_t5_instruct", model_type="flant5xl", is_eval=True, device=device)
 import time
 
 @app.route('/generate', methods=['POST'])
