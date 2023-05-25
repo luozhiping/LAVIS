@@ -10,7 +10,7 @@ from torch.cuda.amp import autocast as autocast
 import torch.nn as nn
 
 import transformers
-
+import numpy as np
 from lavis.common.registry import registry
 from lavis.models.blip2_models.blip2 import Blip2Base, disabled_train
 import time
@@ -242,8 +242,8 @@ class Blip2VicunaInstruct(Blip2Base):
         self,
         samples,
         use_nucleus_sampling=False,
-        num_beams=1,
-        max_length=1,
+        num_beams=5,
+        max_length=256,
         min_length=1,
         top_p=0.9,
         repetition_penalty=1.5,
@@ -365,10 +365,34 @@ class Blip2VicunaInstruct(Blip2Base):
                 repetition_penalty=repetition_penalty,
                 length_penalty=length_penalty,
                 num_return_sequences=num_captions,
+                output_scores=False,
+                return_dict_in_generate=False
             )
+            print(outputs)
+           # transition_scores = self.llm_model.compute_transition_scores(
+           #     outputs.sequences, outputs.scores, outputs.beam_indices, normalize_logits=False
+           # )
+           # print(transition_scores)
+          #  print('scores:', transition_scores, transition_scores.shape)
+          #  input_length = 1 if self.llm_model.config.is_encoder_decoder else llm_tokens.input_ids.shape[1]
+          #  print('lenght:',input_length)
+         #   output_length = 1 + np.sum(transition_scores.cpu().numpy() < 0, axis=1)
+         #   length_penalty = self.llm_model.generation_config.length_penalty
+         #   reconstructed_scores = transition_scores.cpu().sum(axis=1) / (output_length**length_penalty)
+         #   print('reconstructed_scores:', reconstructed_scores)
+        #    generated_tokens = outputs.sequences[:, input_length:]
+         #   print('tokens:' ,generated_tokens, generated_tokens.shape)
+          #  for tok, score in zip(generated_tokens[0], transition_scores[0]):
+           #     print(tokenizer.decode(tok), score.numpy(), np.exp(score.numpy()))
+            #    #print(f"| {tok:5d} | {tokenizer.decode(tok):8s} | {score.numpy():.3f} | {np.exp(score.numpy()):.2%}")
+
+
         outputs[outputs == 0] = 2 # convert output id 0 to 2 (eos_token_id)
+        #print(outputs.sequences)
         output_text = self.llm_tokenizer.batch_decode(outputs, skip_special_tokens=True)
-        return output_text
+        #output_text = [text.strip() for text in output_text]
+
+        return output_text#, outputs.sequences_scores
 
     def predict_answers(
         self,
